@@ -1,0 +1,263 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "PAT",
+  "scopeName": "source.pat",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#definitions"
+    },
+    {
+      "include": "#interfaces"
+    },
+    {
+      "include": "#mailboxes"
+    },
+    {
+      "include": "#messages"
+    },
+    {
+      "include": "#controlFlow"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#booleans"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#identifiers"
+    },
+    {
+      "include": "#operators"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.pat",
+          "match": "#.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.pat",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.pat",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "definitions": {
+      "patterns": [
+        {
+          "name": "meta.function.definition.pat",
+          "begin": "\\b(def)\\s+([a-z][A-Za-z0-9_]*)\\b",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.definition.pat"
+            },
+            "2": {
+              "name": "entity.name.function.definition.pat"
+            }
+          },
+          "end": "(?=\\{)",
+          "patterns": [
+            {
+              "include": "#mailboxes"
+            },
+            {
+              "include": "#types"
+            },
+            {
+              "include": "#identifiers"
+            },
+            {
+              "include": "#operators"
+            }
+          ]
+        }
+      ]
+    },
+    "interfaces": {
+      "patterns": [
+        {
+          "name": "meta.interface.definition.pat",
+          "begin": "\\b(interface)\\s+([A-Z][A-Za-z0-9_]*)\\b\\s*\\{",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.interface.pat"
+            },
+            "2": {
+              "name": "entity.name.type.interface.pat"
+            }
+          },
+          "end": "\\}",
+          "patterns": [
+            {
+              "name": "entity.name.function.message.pat",
+              "match": "\\b[A-Z][A-Za-z0-9_]*\\b(?=\\s*\\()"
+            },
+            {
+              "include": "#mailboxes"
+            },
+            {
+              "include": "#types"
+            },
+            {
+              "include": "#operators"
+            }
+          ]
+        }
+      ]
+    },
+    "mailboxes": {
+      "patterns": [
+        {
+          "name": "meta.type.mailbox.pat",
+          "match": "\\b([A-Z][A-Za-z0-9_]*)([!?])([A-Z][A-Za-z0-9_]*)?",
+          "captures": {
+            "1": {
+              "name": "entity.name.type.pat"
+            },
+            "2": {
+              "name": "keyword.operator.capability.pat"
+            },
+            "3": {
+              "name": "entity.name.function.protocol-action.pat"
+            }
+          }
+        },
+        {
+          "name": "keyword.operator.capability.pat",
+          "match": "[!?](?=\\s*[),.:])"
+        }
+      ]
+    },
+    "messages": {
+      "patterns": [
+        {
+          "name": "meta.receive.message.pat",
+          "begin": "\\b(receive\\*?|guard)\\b",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.communication.pat"
+            }
+          },
+          "end": "(?=->|\\{)",
+          "patterns": [
+            {
+              "name": "entity.name.function.message.pat",
+              "match": "\\b[A-Z][A-Za-z0-9_]*\\b(?=\\s*\\()"
+            },
+            {
+              "include": "#identifiers"
+            },
+            {
+              "include": "#operators"
+            }
+          ]
+        },
+        {
+          "name": "entity.name.function.protocol-action.pat",
+          "match": "(?<=[!?])\\b[A-Z][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+    "controlFlow": {
+      "patterns": [
+        {
+          "name": "keyword.control.flow.pat",
+          "match": "\\b(receive\\*?|guard|from|if|else|let|in)\\b"
+        },
+        {
+          "name": "keyword.control.runtime.pat",
+          "match": "\\b(free|fail|spawn|new|empty)\\b"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.integer.pat",
+          "match": "\\b[-+]?\\d+\\b"
+        },
+        {
+          "name": "constant.numeric.float.pat",
+          "match": "\\b[-+]?\\d+\\.\\d*\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.pat",
+          "match": "\\b(fun|linfun)\\b"
+        },
+        {
+          "name": "storage.type.primitive.pat",
+          "match": "\\b(Unit|Int|Bool)\\b"
+        },
+        {
+          "name": "support.function.builtin.pat",
+          "match": "\\b(print|intToString)\\b"
+        }
+      ]
+    },
+    "booleans": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.pat",
+          "match": "\\b(true|false)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "entity.name.type.pat",
+          "match": "\\b[A-Z][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "entity.name.function.call.pat",
+          "match": "\\b[a-z][A-Za-z0-9_]*\\b(?=\\s*\\()"
+        },
+        {
+          "name": "variable.other.pat",
+          "match": "\\b[a-z][A-Za-z0-9_]*('?)*\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.pat",
+          "match": "->|\\+|\\.|:|=|\\*|;|,"
+        }
+      ]
+    }
+  }
+}

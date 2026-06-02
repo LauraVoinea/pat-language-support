@@ -1,0 +1,60 @@
+{
+  "name": "pat-language-support",
+  "displayName": "PAT Language Support",
+  "description": "Language support for PAT (.pat) files in Visual Studio Code.",
+  "version": "0.0.1",
+  "publisher": "your-publisher-id",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Laura Voinea"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LauraVoinea/pat-language-support.git"
+  },
+  "homepage": "https://github.com/LauraVoinea/pat-language-support#readme",
+  "bugs": {
+    "url": "https://github.com/LauraVoinea/pat-language-support/issues"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "keywords": [
+    "pat",
+    "syntax",
+    "highlighting",
+    "textmate",
+    "concurrency"
+  ],
+  "categories": [
+    "Programming Languages"
+  ],
+  "scripts": {
+    "package": "vsce package",
+    "publish:patch": "vsce publish patch",
+    "publish:minor": "vsce publish minor",
+    "publish:major": "vsce publish major"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "pat",
+        "aliases": [
+          "PAT",
+          "pat"
+        ],
+        "extensions": [
+          ".pat"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "pat",
+        "scopeName": "source.pat",
+        "path": "./syntaxes/pat.tmLanguage.json"
+      }
+    ]
+  }
+}
