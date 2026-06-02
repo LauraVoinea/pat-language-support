@@ -1,0 +1,49 @@
+name: Publish VS Code Extension
+
+on:
+  push:
+    tags:
+      - "**"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install vsce
+        run: npm install -g @vscode/vsce
+
+      - name: Ensure tag matches package version
+        run: |
+          TAG="$GITHUB_REF_NAME"
+          TAG_VERSION="${TAG#v}"
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+
+          if [ "$TAG" != "$PKG_VERSION" ] && [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "Tag '$TAG' must match package.json version '$PKG_VERSION' (or be prefixed with 'v')."
+            exit 1
+          fi
+
+      - name: Package extension
+        run: vsce package
+
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pat-language-support-${{ github.ref_name }}
+          path: "*.vsix"
+
+      - name: Publish to Visual Studio Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: vsce publish --packagePath ./*.vsix --pat "$VSCE_PAT"
