@@ -1,9 +1,9 @@
 {
   "name": "pat-language-support",
-  "displayName": "PAT Language Support",
+  "displayName": "PAT Mailbox Language Support",
   "description": "Language support for PAT (.pat) files in Visual Studio Code.",
   "version": "0.0.1",
-  "publisher": "your-publisher-id",
+  "publisher": "LauraVoinea",
   "license": "Apache-2.0",
   "author": {
     "name": "Laura Voinea"
